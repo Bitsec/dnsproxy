@@ -62,7 +62,7 @@ class DNSQueryResponse() :
 		source_port = randint(4096, 65534)
 
 		# Create and send request to real server
-		pkt = (IP(src=myip, dst=dnsserver)/
+		pkt = (IP(src=srcip, dst=dnsserver)/
 				UDP(dport=53,sport=source_port)/
 				DNS(id=request.packet.id, qr=0, rd=1,
 					qdcount=1, qd=request.packet.qd))
@@ -74,5 +74,5 @@ class DNSQueryResponse() :
 		# Receive, decode and forward server response
 		data, addr = s.recvfrom(1024)
 		pkt = DNS(data)
-		send(IP(src=myip, dst=request.getIp())/
+		send(IP(src=srcip, dst=request.getIp())/
 			 UDP(sport=srcport, dport=request.getPort())/pkt)

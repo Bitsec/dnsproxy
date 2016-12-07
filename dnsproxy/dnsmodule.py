@@ -33,11 +33,11 @@ class DNSServer() :
 	def __init__(self) :
 		self.routing = {}
 	
-	def listen(self) :
+	def listen(self, port) :
 		""" Start listening for data, and pass all received
 			information to the parse function """
 		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		s.bind(("", PORT))
+		s.bind(("", port))
 		while True :
 			data, addr = s.recvfrom(1024)
 			self.parse(DNSQueryRequest(DNS(data),addr))
