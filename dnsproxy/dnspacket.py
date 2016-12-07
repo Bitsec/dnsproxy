@@ -32,14 +32,14 @@ class DNSQueryResponse() :
 	def __init__(self) :
 		pass
 
-	def doDNSResponse(self, request, myip, data) :
+	def doDNSResponse(self, request, srcip, srcport, data) :
 		""" Sends a response to a given DNS Query
 			
 			arg1 : request		The request object to respond to
 			arg2 : myip			The src ip of the response
 			arg3 : data			The data to be returned """
-		pkt = (IP(src=source, dst=request.getIp())/
-				  UDP(dport=request.getPort())/
+		pkt = (IP(src=srcip, dst=request.getIp())/
+				  UDP(sport=srcport, dport=request.getPort())/
 				  DNS(id=request.packet.id, qr=1, qdcount=1, ancount=1, nscount=0, arcount=0,
 					  qd=request.packet.qd, 
 					  an=DNSRR(
@@ -56,7 +56,7 @@ class DNSQueryResponse() :
 			arg1 : request		The request object to respond to
 			arg2 : srcip		The src ip of the response
 			arg3 : srcport 		The port of the reponse
-			arg3 : dnsserver	The ip of the dns-server to forward request to """
+			arg4 : dnsserver	The ip of the dns-server to forward request to """
 
 		# Randomly chosen ports may cause problems on busy machines!
 		source_port = randint(4096, 65534)
